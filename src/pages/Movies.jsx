@@ -2,9 +2,9 @@ import { Field, Form, Formik } from 'formik';
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { getMoviesByQuery } from 'services/request';
-import { StyledItem } from './Home';
+import { StyledItem } from 'components/Styled';
 
-export const Movies = () => {
+const Movies = () => {
   const [seachParams, setSeachParams] = useSearchParams('');
   const queryURL = seachParams.get('query') ?? '';
 
@@ -15,7 +15,6 @@ export const Movies = () => {
     const setData = async () => {
       try {
         const data = await getMoviesByQuery(query);
-
         setMovies(data?.results);
       } catch (error) {
         console.log(error);
@@ -58,3 +57,5 @@ export const Movies = () => {
     </div>
   );
 };
+
+export default Movies;

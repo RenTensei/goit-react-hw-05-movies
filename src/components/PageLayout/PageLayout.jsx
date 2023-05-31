@@ -11,7 +11,7 @@ export const PageLayout = () => {
         <HeaderLink to="/movies">Movies</HeaderLink>
       </Header>
       <Container>
-        <Suspense fallback={Loader}>
+        <Suspense fallback={<Loader />}>
           <Outlet />
         </Suspense>
       </Container>

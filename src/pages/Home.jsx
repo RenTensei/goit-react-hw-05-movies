@@ -1,6 +1,6 @@
-import styled from '@emotion/styled';
+import { StyledItem } from 'components/Styled';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { getTrendingMovies } from 'services/request';
 
 export const Home = () => {
@@ -19,13 +19,17 @@ export const Home = () => {
     setData();
   }, []);
 
+  const location = useLocation();
+
   return (
     <div>
       <h1>Trending today</h1>
       <ul>
         {trendingMovies.map(({ id, title, name }) => (
           <StyledItem key={id}>
-            <Link to={`/movies/${id}`}>{title ?? name}</Link>
+            <Link to={`/movies/${id}`} state={{ from: location }}>
+              {title ?? name}
+            </Link>
           </StyledItem>
         ))}
       </ul>
@@ -33,23 +37,4 @@ export const Home = () => {
   );
 };
 
-export const StyledItem = styled.li`
-  display: block;
-  padding: 8px;
-  margin-bottom: 12px;
-  max-width: fit-content;
-
-  background-color: #873e23;
-  color: #cdb896;
-  text-decoration: none;
-  border-radius: 8px;
-
-  a {
-    text-decoration: none;
-    color: #cdb896;
-
-    &:hover {
-      color: black;
-    }
-  }
-`;
+export default Home;

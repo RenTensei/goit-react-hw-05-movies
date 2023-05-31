@@ -1,14 +1,17 @@
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 import { getMovieInfo } from 'services/request';
-import { StyledItem } from './Home';
+import { Loader } from 'components/Loader/Loader';
+import { StyledItem } from 'components/Styled';
 
-export const MovieDetails = () => {
+const MovieDetails = () => {
   const [title, setTitle] = useState('');
   const [userScore, setUserScore] = useState('');
   const [overview, setOverview] = useState('');
   const [genres, setGenres] = useState([]);
   const [imageLink, setImageLink] = useState('');
+
+  const locationRef = useRef(useLocation());
 
   const { movieId } = useParams();
 
@@ -16,7 +19,6 @@ export const MovieDetails = () => {
     const setData = async () => {
       try {
         const data = await getMovieInfo(movieId);
-        console.log(data);
 
         const originalTitle = data?.original_title;
         const releaseYear = data?.release_date.split('-')[0];
@@ -35,15 +37,10 @@ export const MovieDetails = () => {
     setData();
   }, [movieId]);
 
-  const location = useLocation();
-  console.log(location);
-
-  // const handleGoBack = () => {};
-
   return (
     <div>
       <StyledItem>
-        <Link to={location.state.from}>← Go Back</Link>
+        <Link to={locationRef.current.state?.from ?? '/movies'}>← Go Back</Link>
       </StyledItem>
       <div style={{ display: 'flex', gap: '20px' }}>
         <img
@@ -75,7 +72,11 @@ export const MovieDetails = () => {
           </StyledItem>
         </ul>
       </div>
-      <Outlet />
+      <Suspense fallback={<Loader />}>
+        <Outlet />
+      </Suspense>
     </div>
   );
 };
+
+export default MovieDetails;

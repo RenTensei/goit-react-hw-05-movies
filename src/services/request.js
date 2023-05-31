@@ -23,6 +23,28 @@ export async function getMovieInfo(movie_id) {
   }
 }
 
+export async function getMovieReviews(movie_id) {
+  try {
+    const res = await axios.get(
+      `${BASE_URL}/movie/${movie_id}/reviews?api_key=${API_KEY}`
+    );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getMovieCast(movie_id) {
+  try {
+    const res = await axios.get(
+      `${BASE_URL}/movie/${movie_id}/credits?api_key=${API_KEY}`
+    );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function getMoviesByQuery(query) {
   try {
     const res = await axios.get(
